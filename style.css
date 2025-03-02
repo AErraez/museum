@@ -1,0 +1,27 @@
+.country {
+    stroke: white;
+    stroke-width: 0.5;
+  }
+  .highlighted {
+    fill: orange;
+  }
+  .d3-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    pointer-events: none
+  }
+  #img-carousel .carousel-item img {
+  width: auto;
+  max-width: 100%; 
+  max-height: 700px;
+  object-fit: contain; 
+  }
+  .carousel-caption {
+  background: rgba(0, 0, 0, 0.7); 
+  color: white !important; 
+  padding: 10px;
+  border-radius: 8px;
+  }
