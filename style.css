@@ -3,7 +3,7 @@
     stroke-width: 0.5;
   }
   .highlighted {
-    fill: orange;
+    fill: #d82c34;
   }
   .d3-tooltip {
     position: absolute;
@@ -25,3 +25,78 @@
   padding: 10px;
   border-radius: 8px;
   }
+  body {
+    background-color: #ffffff; /* Cream background */
+     /* Dark red text */
+  }
+  .header {
+    background-color: #d82c34;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  .container {
+    margin-top: 20px;
+  }
+  .card {
+    background-color: #ffffff;
+    border: none;
+  }
+  #map-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 0;
+  }
+  #world-map {
+    width: 90%;
+    height: 600px;
+    border: 2px solid #d82c34;
+    border-radius: 3px;
+    background-color: white;
+  }
+ /* Change track color */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #bdb79f; /* Change track color */
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s;
+}
+
+/* Change thumb (handle) color */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #d82c34; /* Change thumb color */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #d82c34; /* Change thumb color for Firefox */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* When hovering or active */
+input[type="range"]:hover {
+  background: #bdb79f; /* Darker blue on hover */
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #d82c34; /* Lighter red on hover */
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}

@@ -73,6 +73,21 @@ function shuffle(array) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const beginDateSlider = document.getElementById("begin-date");
+    const endDateSlider = document.getElementById("end-date");
+    const beginDateValue = document.getElementById("begin-date-value");
+    const endDateValue = document.getElementById("end-date-value");
+
+    // Update displayed values
+    beginDateSlider.addEventListener("input", function () {
+        beginDateValue.textContent = this.value;
+    });
+
+    endDateSlider.addEventListener("input", function () {
+        endDateValue.textContent = this.value;
+    });
+});
 
 var carousel = document.getElementById('img-carousel')
 
@@ -96,7 +111,7 @@ fetch('./museum.json')
         var objectIds = data.map(item => item.id);
         updateCarousel(objectIds.slice(0, 3))
 
-        document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ")
+        //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ")
 
 
         d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").then(function (geoData) {
@@ -106,7 +121,7 @@ fetch('./museum.json')
             var width = svg.attr("width");
             var height = svg.attr("height");
 
-            var projection = d3.geoNaturalEarth1().scale(160).translate([width / 2, height / 1.5]);
+            var projection = d3.geoNaturalEarth1().scale(200).translate([500, 300]);
             var path = d3.geoPath().projection(projection);
 
             // tooltip for item count
@@ -115,7 +130,7 @@ fetch('./museum.json')
             // color scale for map
             var colorScale = d3.scaleQuantize()
                 .domain([0, d3.max(Object.values(objectCountByCountry)) * 0.001, d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
-                .range(d3.schemeBlues[9]);  // Color range
+                .range(d3.schemePuBu[8]);  // Color range
 
             // no clue how this works:/
             svg.selectAll(".country")
@@ -165,7 +180,7 @@ fetch('./museum.json')
             // update object IDs based on filters
             function updateObjectIds(filteredData) {
                 var objectIds = filteredData.map(item => item.id);
-                document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ");
+                //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ");
                 shuffle(objectIds)
                 var imgIds = objectIds
                 if (objectIds.length > 3) {
@@ -182,9 +197,12 @@ fetch('./museum.json')
             }
 
             // Filter data based on date
-            d3.select("#begin-date").on("input", applyFilters);
-            d3.select("#end-date").on("input", applyFilters);
+            d3.select("#begin-date").on("input", applyFiltersDateInput);
+            d3.select("#end-date").on("input", applyFiltersDateInput);
+            d3.select("#begin-date").on("change", applyFilters);
+            d3.select("#end-date").on("change", applyFilters);
 
+            
             function applyFilters() {
                 var beginDate = parseInt(d3.select("#begin-date").property("value"));
                 var endDate = parseInt(d3.select("#end-date").property("value"));
@@ -217,6 +235,32 @@ fetch('./museum.json')
                 } else {
                     updateObjectIds(filteredData);
                 }
+            }
+
+            function applyFiltersDateInput() {
+                var beginDate = parseInt(d3.select("#begin-date").property("value"));
+                var endDate = parseInt(d3.select("#end-date").property("value"));
+
+                var filteredData = data.filter(item => {
+                    var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
+                    var isValidEndDate = !isNaN(endDate) && item.end_date <= endDate;
+                    return isValidBeginDate && isValidEndDate;
+                });
+
+                // Calculate object count based on filtered data
+                objectCountByCountry = calculateObjectCountByCountry(filteredData);
+
+                // Update the colors 
+                svg.selectAll(".country")
+                    .attr("fill", function (d) {
+                        var countryName = d.properties.name;
+                        var count = objectCountByCountry[countryName] || 0;
+                        if (count === 0) {
+                            return "#f0f0f0";
+                        }
+                        return colorScale(count);
+                    });
+
             }
 
         });
