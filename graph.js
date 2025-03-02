@@ -123,7 +123,7 @@ fetch('./museum.json')
             var width = svg.attr("width");
             var height = svg.attr("height");
             svg.attr("viewBox", `0 0 ${width} ${height}`);
-            var projection = d3.geoNaturalEarth1().scale(width/6).translate([width/2, height/2]);
+            var projection = d3.geoNaturalEarth1().scale(width/5.5).translate([width/2, height/2]);
             var path = d3.geoPath().projection(projection);
 
             // tooltip for item count
