@@ -50,11 +50,11 @@
     padding: 20px 0;
   }
   #world-map {
-    width: 90%;
-    height: 600px;
     border: 2px solid #d82c34;
     border-radius: 3px;
     background-color: white;
+    width: 100%;
+    height: auto;
   }
  /* Change track color */
 input[type="range"] {

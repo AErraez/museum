@@ -28,6 +28,8 @@ async function updateCarousel(imgIds) {
             var objurl = apidata['primaryImage']
             var objtitle = apidata['title']
             var objgallery = apidata['GalleryNumber']
+            var artist=apidata['artistDisplayName']
+            var date=apidata['objectDate']
             if (apidata) {
                 if (i == 1) {
                     carousel_text += `<div class="carousel-item active">
@@ -120,8 +122,8 @@ fetch('./museum.json')
             var svg = d3.select("#world-map");
             var width = svg.attr("width");
             var height = svg.attr("height");
-
-            var projection = d3.geoNaturalEarth1().scale(200).translate([500, 300]);
+            svg.attr("viewBox", `0 0 ${width} ${height}`);
+            var projection = d3.geoNaturalEarth1().scale(width/6).translate([width/2, height/2]);
             var path = d3.geoPath().projection(projection);
 
             // tooltip for item count
