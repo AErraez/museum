@@ -91,13 +91,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const beginDateValue = document.getElementById("begin-date-value");
     const endDateValue = document.getElementById("end-date-value");
 
+
     // Update displayed values
     beginDateSlider.addEventListener("input", function () {
-        beginDateValue.textContent = this.value;
+        beginDateValue.textContent = this.value==-550 ? -90000: this.value;
     });
 
     endDateSlider.addEventListener("input", function () {
-        endDateValue.textContent = this.value;
+        endDateValue.textContent = this.value==-550 ? -30000 : this.value;
     });
 });
 
@@ -121,7 +122,7 @@ fetch('./museum.json')
         // get object count by country
         let objectCountByCountry = calculateObjectCountByCountry(data);
         var objectIds = data.map(item => item.id);
-        updateCarousel(objectIds.slice(0, 3))
+        updateCarousel(objectIds.slice(0, 5))
 
         //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ")
 
@@ -195,8 +196,8 @@ fetch('./museum.json')
                 //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ");
                 shuffle(objectIds)
                 var imgIds = objectIds
-                if (objectIds.length > 3) {
-                    imgIds = objectIds.slice(0, 3)
+                if (objectIds.length > 5) {
+                    imgIds = objectIds.slice(0, 5)
                 }
                 updateCarousel(imgIds)
 
@@ -218,6 +219,8 @@ fetch('./museum.json')
             function applyFilters() {
                 var beginDate = parseInt(d3.select("#begin-date").property("value"));
                 var endDate = parseInt(d3.select("#end-date").property("value"));
+                endDate= endDate==-550 ? -30000 : endDate
+                beginDate= beginDate==-550 ? -90000: beginDate
 
                 var filteredData = data.filter(item => {
                     var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
@@ -252,7 +255,9 @@ fetch('./museum.json')
             function applyFiltersDateInput() {
                 var beginDate = parseInt(d3.select("#begin-date").property("value"));
                 var endDate = parseInt(d3.select("#end-date").property("value"));
-
+                endDate= endDate==-550 ? -30000 : endDate
+                beginDate= beginDate==-550 ? -90000: beginDate
+            
                 var filteredData = data.filter(item => {
                     var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
                     var isValidEndDate = !isNaN(endDate) && item.end_date <= endDate;
