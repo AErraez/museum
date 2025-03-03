@@ -19,7 +19,9 @@ async function getObject(id) {
 async function updateCarousel(imgIds) {
     var carousel_text = ''
     if (imgIds.length == 0) {
-        carousel_text = ""
+        carousel_text = `<div class="carousel-item active">
+      <img src="./empty.png" class="d-block w-100" alt="...">
+    </div>`
     }
     else {
         let i = 1
@@ -30,12 +32,19 @@ async function updateCarousel(imgIds) {
             var objgallery = apidata['GalleryNumber']
             var artist=apidata['artistDisplayName']
             var date=apidata['objectDate']
+            if (artist){
+                var p2=`<p>Made By # ${artist}. (${date})</p>`
+            }
+            else {
+                var p2=`<p>(${date})</p>`
+            }
             if (apidata) {
                 if (i == 1) {
                     carousel_text += `<div class="carousel-item active">
       <img src="${objurl}" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>${objtitle}</h5>
+        ${p2}
         <p>Available at Gallery # ${objgallery}.</p>
       </div>
     </div>`
@@ -45,6 +54,7 @@ async function updateCarousel(imgIds) {
       <img src="${objurl}" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>${objtitle}</h5>
+        ${p2}
         <p>Available at Gallery # ${objgallery}.</p>
       </div>
     </div>`
