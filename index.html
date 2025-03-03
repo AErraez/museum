@@ -18,7 +18,7 @@
 
   <div class="container mt-3">
     <div class="card p-4 shadow-sm border-0">
-      <p class="text-center fw-bold text-danger">_________________________________________________________________________________</p>
+      
       <p class="text-center">
         The Metropolitan Museum of Art (MET) is one of the world's most renowned art museums, located in 
         the Manhattan district of New York City, United States. 
@@ -29,21 +29,20 @@
         housed in the museum. We hope you enjoy this experience and feel inspired to visit the museum on 
         one of your future trips.
       </p>
+      <p class="text-center fw-bold red-text ">_________________________________________________________________________________</p>
+      <h3 class=" fw-bold text-center mt-4 red-text">How to Use This Portal</h3>
+      <p class="text-center">
+        To navigate this portal, start by selecting the time period and country of origin that interest you. 
+        Based on your selection, a gallery of images will appear at the bottom of the page, showcasing artworks 
+        that match your chosen filters.
+      </p>
     </div>
   </div>
 
-  <div class="container my-5">
-    <h3 class="text-danger fw-bold text-center">How to Use This Portal</h3>
-    <p class="text-center">
-      To navigate this portal, start by selecting the time period and country of origin that interest you. 
-      Based on your selection, a gallery of images will appear at the bottom of the page, showcasing artworks 
-      that match your chosen filters.
-    </p>
-  </div>
 
-  <div class="container mt-4">
-    <div class="card p-3 shadow-sm">
-      <h4 class="text-danger">Filter by Time Period</h4>
+  <div class="container mt-3">
+    <div class="card p-3">
+      <h4 class="">Filter by Time Period</h4>
       <p>In the first bar, select the starting year of the range for which you want to view the image gallery, and in the second bar, select the ending year.</p>
       <label for="begin-date" class="form-label">From Year: <span id="begin-date-value">-90000</span></label>
       <input type="range" id="begin-date" class="form-range" min="-550" max="1990" value="-550" step="50">
@@ -54,13 +53,13 @@
   </div>
 
   <div id="map-container" class="container p-3">
-    <h4 class="text-danger">Filter by Country of Origin</h4>
+    <h4 class="">Filter by Country of Origin</h4>
     <p>Click on the countries of interest. Selecting a country will display the number of available objects for it.</p>
-    <svg id="world-map" width="700" height="400"></svg>
+    <svg id="world-map" width="700" height="300"></svg>
   </div>
 
   <div class="container mt-4">
-    <h3 class="text-danger text-center">Artifacts from Filters</h3>
+    <h3 class=" text-center">Artifacts from Filters</h3>
     <p class="text-center">Here are some of the artifacts you can view based on the selected filters.</p>
     
     <div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel">
@@ -92,14 +91,14 @@
   </div>
 
   <div class="container mt-5 text-center">
-    <h3 class="text-danger fw-bold">Art and History: A Journey Through Time</h3>
+    <h3 class=" fw-bold red-text">Art and History: A Journey Through Time</h3>
     <p>Art and history are fascinating fields that allow us to travel back in time and explore our world's past.</p>
     <p>We hope this portal has provided you with a glimpse into this experience and inspires you to visit the museum.</p>
   </div>
 
   <div class="container mt-5 text-center">
     <div class="alert alert-light border shadow-sm p-4">
-        <h3 class="mb-3 text-danger fw-bold">Visit The Museum</h3>
+        <h3 class="mb-3  fw-bold red-text">Visit The Museum</h3>
         <p class="mb-2">Interested in one of the museum's objects?</p>
         <p class="mb-3">Find its display gallery on the official museum map.</p>
         <a href="https://maps.metmuseum.org/" target="_blank" class="btn btn-danger px-4">
