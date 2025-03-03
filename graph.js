@@ -33,7 +33,7 @@ async function updateCarousel(imgIds) {
             var artist=apidata['artistDisplayName']
             var date=apidata['objectDate']
             if (artist){
-                var p2=`<p>Made By # ${artist}. (${date})</p>`
+                var p2=`<p>Made By ${artist}. (${date})</p>`
             }
             else {
                 var p2=`<p>(${date})</p>`
