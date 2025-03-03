@@ -38,6 +38,11 @@ async function updateCarousel(imgIds) {
             else {
                 var p2=`<p>(${date})</p>`
             }
+
+            var p3=`<p>Currently not in display.</p>`
+            if (objgallery){
+                p3=`<p>Available at Gallery # ${objgallery}.</p>`
+            }
             if (apidata) {
                 if (i == 1) {
                     carousel_text += `<div class="carousel-item active">
@@ -45,7 +50,7 @@ async function updateCarousel(imgIds) {
       <div class="carousel-caption d-none d-md-block">
         <h5>${objtitle}</h5>
         ${p2}
-        <p>Available at Gallery # ${objgallery}.</p>
+        ${p3}
       </div>
     </div>`
                 }
@@ -55,7 +60,7 @@ async function updateCarousel(imgIds) {
       <div class="carousel-caption d-none d-md-block">
         <h5>${objtitle}</h5>
         ${p2}
-        <p>Available at Gallery # ${objgallery}.</p>
+        ${p3}
       </div>
     </div>`
                 }
