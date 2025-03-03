@@ -127,6 +127,7 @@ fetch('./museum.json')
         // get object count by country
         let objectCountByCountry = calculateObjectCountByCountry(data);
         var objectIds = data.map(item => item.id);
+        shuffle(objectIds)
         updateCarousel(objectIds.slice(0, 5))
 
         //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ")
