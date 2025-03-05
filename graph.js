@@ -90,25 +90,24 @@ function shuffle(array) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const beginDateSlider = document.getElementById("begin-date");
-    const endDateSlider = document.getElementById("end-date");
-    const beginDateValue = document.getElementById("begin-date-value");
-    const endDateValue = document.getElementById("end-date-value");
+const beginDateSlider = document.getElementById("begin-date");
+const endDateSlider = document.getElementById("end-date");
+const beginDateValue = document.getElementById("begin-date-value");
+const endDateValue = document.getElementById("end-date-value");
 
 
-    // Update displayed values
-    beginDateSlider.addEventListener("input", function () {
-        beginDateValue.textContent = this.value==-550 ? -90000: this.value;
-    });
-
-    endDateSlider.addEventListener("input", function () {
-        endDateValue.textContent = this.value==-550 ? -30000 : this.value;
-    });
+beginDateSlider.addEventListener("input", function () {
+    beginDateValue.textContent = this.value==-550 ? -90000: this.value;
 });
+
+endDateSlider.addEventListener("input", function () {
+    endDateValue.textContent = this.value==-550 ? -30000 : this.value;
+});
+
 
 var carousel = document.getElementById('img-carousel')
 const objectCount=document.getElementById('obj-count')
+const resetBtn=document.getElementById('reset-filters')
 const qualitySwitch = document.getElementById('QualitySwitch')
 var quality=false
 
@@ -303,6 +302,14 @@ fetch('./museum.json')
             qualitySwitch.addEventListener('change',()=>{
                 quality=qualitySwitch.checked
                 updateCarousel(imgIds)
+            })
+
+            resetBtn.addEventListener('click',()=>{
+                beginDateSlider.value=-550
+                beginDateValue.textContent = -90000
+                endDateSlider.value=2000
+                endDateValue.textContent =2000
+                resetCountryFilter()
             })
 
         });
