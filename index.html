@@ -45,17 +45,35 @@
   </div>
 
   <div class="container-lg mt-4">
-    <div class="card p-4 shadow-sm border-0">
-      <h4>Filter by Time Period</h4>
-      <p>Select a range of years to explore artifacts from a specific era.</p>
+    <div class="d-flex align-items-stretch">
       
-      <label for="begin-date" class="form-label">From Year: <span id="begin-date-value">-90000</span></label>
-      <input type="range" id="begin-date" class="form-range" min="-550" max="1990" value="-550" step="50">
-      
-      <label for="end-date" class="form-label mt-2">To Year: <span id="end-date-value">2000</span></label>
-      <input type="range" id="end-date" class="form-range" min="-550" max="2000" value="2000" step="50">
+      <!-- Filter by Time Period Section -->
+      <div class="card p-4 shadow-sm border-0 flex-grow-1">
+        <h4>Filter by Time Period</h4>
+        <p>Select a range of years to explore artifacts from a specific era.</p>
+  
+        <label for="begin-date" class="form-label">From Year: <span id="begin-date-value">-90000</span></label>
+        <input type="range" id="begin-date" class="form-range" min="-550" max="1990" value="-550" step="50">
+  
+        <label for="end-date" class="form-label mt-2">To Year: <span id="end-date-value">2000</span></label>
+        <input type="range" id="end-date" class="form-range" min="-550" max="2000" value="2000" step="50">
+      </div>
+  
+      <!-- Right-side section with Reset Button & Total Items Card -->
+      <div class="d-flex flex-column ms-3 justify-content-end" style="min-width: 180px;">
+        <!-- Reset Filters Button -->
+        <button id="reset-filters" class="btn btn-danger mb-3">Reset Filters</button>
+  
+        <!-- Small Card for Number of Items -->
+        <div class="card p-3 shadow-sm border-0 bg-light text-center">
+          <h6 class="mb-1">Total Items</h6>
+          <p class="fs-5 fw-bold mb-0" id="obj-count">0</p>
+        </div>
+      </div>
+  
     </div>
   </div>
+  
 
 
   <div id="map-container" class="container p-3">
@@ -67,6 +85,10 @@
   <div class="container-lg mt-5">
     <h3 class="text-center">Artifacts from Filters</h3>
     <p class="text-center">Here are some of the artifacts based on your selected filters.</p>
+    <div class="d-flex justify-content-center align-items-center gap-5 mb-2 form-switch" style="padding-left: 0">
+      <label class="form-check-label" for="QualitySwitch">High Quality Images</label>
+      <input class="form-check-input" type="checkbox" id="QualitySwitch">
+    </div>
     
     <div id="carouselExampleCaptions" class="carousel slide carousel-dark" data-bs-ride="carousel">
       <div id="img-carousel" class="carousel-inner">
@@ -107,7 +129,7 @@
       <h3 class="mb-3 fw-bold red-text">Visit The Museum</h3>
       <p class="mb-2">Interested in one of the museum's objects?</p>
       <p class="mb-3">Find its display gallery on the official museum map.</p>
-      <a href="https://maps.metmuseum.org/" target="_blank" class="btn btn-danger px-4">
+      <a href="https://maps.metmuseum.org/" target="_blank" class="btn btn-danger end-btn px-4">
         Explore Museum Map
       </a>
     </div>

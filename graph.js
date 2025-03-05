@@ -27,7 +27,7 @@ async function updateCarousel(imgIds) {
         let i = 1
         for (let id of imgIds) {
             var apidata = await getObject(id)
-            var objurl = apidata['primaryImage']
+            var objurl = quality ? apidata['primaryImage'] : apidata['primaryImageSmall']
             var objtitle = apidata['title']
             var objgallery = apidata['GalleryNumber']
             var artist=apidata['artistDisplayName']
@@ -108,12 +108,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var carousel = document.getElementById('img-carousel')
+const objectCount=document.getElementById('obj-count')
+const qualitySwitch = document.getElementById('QualitySwitch')
+var quality=false
 
 
 fetch('./museum.json')
     .then(response => response.json())
     .then(data => {
         // function to calculate the count of objects per country
+        
+
         function calculateObjectCountByCountry(data) {
             const objectCountByCountry = {};
             data.forEach(item => {
@@ -127,8 +132,10 @@ fetch('./museum.json')
         // get object count by country
         let objectCountByCountry = calculateObjectCountByCountry(data);
         var objectIds = data.map(item => item.id);
-        shuffle(objectIds)
-        updateCarousel(objectIds.slice(0, 5))
+        objectCount.innerHTML=objectIds.length.toString()
+         shuffle(objectIds)
+        var imgIds = objectIds.slice(0, 5)
+        updateCarousel(imgIds)
 
         //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ")
 
@@ -199,9 +206,10 @@ fetch('./museum.json')
             // update object IDs based on filters
             function updateObjectIds(filteredData) {
                 var objectIds = filteredData.map(item => item.id);
+                objectCount.innerHTML=objectIds.length.toString()
                 //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ");
                 shuffle(objectIds)
-                var imgIds = objectIds
+                imgIds = objectIds
                 if (objectIds.length > 5) {
                     imgIds = objectIds.slice(0, 5)
                 }
@@ -272,7 +280,7 @@ fetch('./museum.json')
 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
-
+                
                 // Update the colors 
                 svg.selectAll(".country")
                     .attr("fill", function (d) {
@@ -283,8 +291,19 @@ fetch('./museum.json')
                         }
                         return colorScale(count);
                     });
-
+                var country = d3.select(".country.highlighted").data()[0]?.properties.name;
+                if (country) {
+                    var countryFilteredData = filteredData.filter(item => item.country === country);
+                    objectCount.innerHTML=countryFilteredData.length.toString()
+                } else {
+                    objectCount.innerHTML=filteredData.length.toString()
+                }
             }
+
+            qualitySwitch.addEventListener('change',()=>{
+                quality=qualitySwitch.checked
+                updateCarousel(imgIds)
+            })
 
         });
     })

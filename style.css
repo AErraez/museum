@@ -115,7 +115,12 @@ input[type="range"]:active::-webkit-slider-thumb {
   transition: 0.3s ease-in-out;
 }
 
-.btn-danger:hover {
+.end-btn:hover {
   background-color: #a9212a;
   transform: scale(1.05);
+}
+
+#QualitySwitch:checked {
+  background-color: #d82c34;
+  border-color: #d82c34;
 }
