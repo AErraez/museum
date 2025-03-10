@@ -116,6 +116,7 @@ const objectCount = document.getElementById('obj-count')
 const resetBtn = document.getElementById('reset-filters')
 const qualitySwitch = document.getElementById('QualitySwitch')
 var quality = false
+const unknownCount=document.getElementById('unknown-objects')
 
 
 fetch('./museum.json')
@@ -152,6 +153,7 @@ fetch('./museum.json')
         var objectIds = data.map(item => item.id);
 
         objectCount.innerHTML = objectIds.length.toString()
+        unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
         shuffle(objectIds)
 
         var imgIds = objectIds.slice(0, 5)
@@ -369,7 +371,7 @@ fetch('./museum.json')
                 } 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
-
+                unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
                 // Update the colors 
                 svg.selectAll(".country")
                     .attr("fill", function (d) {
@@ -418,7 +420,7 @@ fetch('./museum.json')
                 } 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
-
+                unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
                 // Update the colors 
                 svg.selectAll(".country")
                     .attr("fill", function (d) {
