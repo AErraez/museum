@@ -232,7 +232,7 @@ fetch('./museum.json')
 
 
             const categoryColors = d3.scaleOrdinal()
-            .domain(["Others", "Ceramics and Glass", "Sculpture and Figures", "Funerary and Religious Objects", "Paintings and Drawings",'Kitchen and Tableware','Furniture and Decoration','Jewelry and Ornaments','Fragments and Pieces','Boxes and Containers','Weapons and Armor']) // Replace with real categories
+            .domain(["Others", "Ceramics and Glass", "Sculpture and Figures", "Funerary and Religious Objects", "Paintings and Drawings",'Kitchen and Tableware','Furniture and Decoration','Jewelry and Ornaments','Fragments and Pieces','Boxes and Containers','Weapons and Armor','Musical Instruments']) 
             .range(d3.schemeSet3);
         
             function createTreeMap(objectCountByType) {
