@@ -30,21 +30,21 @@ async function updateCarousel(imgIds) {
             var objurl = quality ? apidata['primaryImage'] : apidata['primaryImageSmall']
             var objtitle = apidata['title']
             var objgallery = apidata['GalleryNumber']
-            var artist=apidata['artistDisplayName']
-            var date=apidata['objectDate']
-            var objcountry= apidata['country']
+            var artist = apidata['artistDisplayName']
+            var date = apidata['objectDate']
+            var objcountry = apidata['country']
 
-            var objtext= objcountry ? `, ${objcountry}` : ''
-            if (artist){
-                var p2=`<p>Made By ${artist}. (${date}${objtext})</p>`
+            var objtext = objcountry ? `, ${objcountry}` : ''
+            if (artist) {
+                var p2 = `<p>Made By ${artist}. (${date}${objtext})</p>`
             }
             else {
-                var p2=`<p>(${date}${objtext})</p>`
+                var p2 = `<p>(${date}${objtext})</p>`
             }
 
-            var p3=`<p>Currently not in display.</p>`
-            if (objgallery){
-                p3=`<p>Available at Gallery # ${objgallery}.</p>`
+            var p3 = `<p>Currently not in display.</p>`
+            if (objgallery) {
+                p3 = `<p>Available at Gallery # ${objgallery}.</p>`
             }
             if (apidata) {
                 if (i == 1) {
@@ -93,6 +93,80 @@ function shuffle(array) {
     }
 }
 
+const categoryColors = d3.scaleOrdinal()
+    .domain(["Others", "Ceramics and Glass", "Sculpture and Figures", "Funerary and Religious Objects", "Paintings and Drawings",'Kitchen and Tableware','Furniture and Decoration','Jewelry and Ornaments','Fragments and Pieces','Boxes and Containers']) // Replace with real categories
+    .range(d3.schemeTableau10);
+
+function createTreeMap(objectCountByType) {
+    const treeSvg = d3.select("#tree-map");
+
+    // Get the container's actual dimensions for responsiveness
+    const container = treeSvg.node().getBoundingClientRect();
+    const width = container.width;
+    const height = container.height;
+
+    treeSvg.attr("viewBox", `0 0 ${width} ${height}`)
+           .attr("preserveAspectRatio", "xMidYMid meet");
+
+    // Clear previous tree map
+    treeSvg.selectAll("*").remove();
+
+    // Create a tooltip
+    const tooltip = d3.select("body").append("div").attr("class", "d3-tooltip").style("position", "absolute").style("pointer-events", "none").style("z-index", "9999");
+
+    // Convert data into a hierarchical format
+    const root = d3.hierarchy({
+        children: Object.entries(objectCountByType).map(([key, value]) => ({ name: key, value }))
+    }).sum(d => d.value)
+      .sort((a, b) => b.value - a.value);
+
+    // Create a treemap layout
+    d3.treemap()
+        .size([width, height])
+        .padding(2)
+        (root);
+
+
+    // Add rectangles for each node
+    const nodes = treeSvg.selectAll(".node")
+        .data(root.leaves())
+        .enter()
+        .append("g")
+        .attr("class", "node")
+        .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+    nodes.append("rect")
+        .attr("width", d => d.x1 - d.x0)
+        .attr("height", d => d.y1 - d.y0)
+        .attr("fill", d => categoryColors(d.data.name))
+        .on("mouseover", (event, d) => {
+            tooltip.style("display", "inline-block")
+                   .html(`${d.data.name}: ${d.data.value} objects`)
+                   .style("left", (event.pageX + 10) + "px")
+                   .style("top", (event.pageY - 20) + "px");
+        })
+        .on("mouseout", () => {
+            tooltip.style("display", "none");
+        });
+
+    nodes.append("text")
+        .attr("x", 5)
+        .attr("y", 15)
+        .attr("fill", "white")
+        .style("font-size", "12px")
+        .style("pointer-events", "none")
+        .text(d => d.data.name)
+        .each(function (d) {
+            const bbox = this.getBBox();
+            if (bbox.width > d.x1 - d.x0 - 10 || bbox.height > d.y1 - d.y0 - 5) {
+                d3.select(this).remove();
+            }
+        });
+
+
+}
+
+
 const beginDateSlider = document.getElementById("begin-date");
 const endDateSlider = document.getElementById("end-date");
 const beginDateValue = document.getElementById("begin-date-value");
@@ -100,26 +174,26 @@ const endDateValue = document.getElementById("end-date-value");
 
 
 beginDateSlider.addEventListener("input", function () {
-    beginDateValue.textContent = this.value==-550 ? -90000: this.value;
+    beginDateValue.textContent = this.value == -550 ? -90000 : this.value;
 });
 
 endDateSlider.addEventListener("input", function () {
-    endDateValue.textContent = this.value==-550 ? -30000 : this.value;
+    endDateValue.textContent = this.value == -550 ? -30000 : this.value;
 });
 
 
 var carousel = document.getElementById('img-carousel')
-const objectCount=document.getElementById('obj-count')
-const resetBtn=document.getElementById('reset-filters')
+const objectCount = document.getElementById('obj-count')
+const resetBtn = document.getElementById('reset-filters')
 const qualitySwitch = document.getElementById('QualitySwitch')
-var quality=false
+var quality = false
 
 
 fetch('./museum.json')
     .then(response => response.json())
     .then(data => {
         // function to calculate the count of objects per country
-        
+
 
         function calculateObjectCountByCountry(data) {
             const objectCountByCountry = {};
@@ -131,11 +205,26 @@ fetch('./museum.json')
             return objectCountByCountry;
         }
 
+        function calculateObjectCountByType(data) {
+            const objectCountByType = {};
+            data.forEach(item => {
+                if (item.object) {
+                    objectCountByType[item.object] = (objectCountByType[item.object] || 0) + 1;
+                }
+            });
+            return objectCountByType;
+        }
+
         // get object count by country
         let objectCountByCountry = calculateObjectCountByCountry(data);
+        let objectCountByType = calculateObjectCountByType(data)
+
+        console.log(Object.values(objectCountByType))
         var objectIds = data.map(item => item.id);
-        objectCount.innerHTML=objectIds.length.toString()
-         shuffle(objectIds)
+
+        objectCount.innerHTML = objectIds.length.toString()
+        shuffle(objectIds)
+
         var imgIds = objectIds.slice(0, 5)
         updateCarousel(imgIds)
 
@@ -149,7 +238,7 @@ fetch('./museum.json')
             var width = svg.attr("width");
             var height = svg.attr("height");
             svg.attr("viewBox", `0 0 ${width} ${height}`);
-            var projection = d3.geoNaturalEarth1().scale(width/6.5).translate([width/2, height/2]);
+            var projection = d3.geoNaturalEarth1().scale(width / 6.5).translate([width / 2, height / 2]);
             var path = d3.geoPath().projection(projection);
 
             // tooltip for item count
@@ -205,10 +294,25 @@ fetch('./museum.json')
                     .filter(d => d.properties.name === countryName)
                     .classed("highlighted", true);
             }
+
+            // Reset the country filter and unhighlight the country
+            function resetCountryFilter() {
+                svg.selectAll(".country").classed("highlighted", false);
+                applyFilters();
+            }
+
+
+            const tree_svg = d3.select('#tree-map');
+            const tree_width = parseInt(tree_svg.attr('width'));
+            const tree_height = parseInt(tree_svg.attr('height'));
+            const unit = width * height / 1;
+            const bounds = {top: 0, left: 0, right: tree_width, bottom: tree_height}
+            createTreeMap(objectCountByType)
+
             // update object IDs based on filters
             function updateObjectIds(filteredData) {
                 var objectIds = filteredData.map(item => item.id);
-                objectCount.innerHTML=objectIds.length.toString()
+                objectCount.innerHTML = objectIds.length.toString()
                 //document.getElementById("object-ids").innerText = "Object IDs: " + objectIds.join(", ");
                 shuffle(objectIds)
                 imgIds = objectIds
@@ -219,11 +323,7 @@ fetch('./museum.json')
 
             }
 
-            // Reset the country filter and unhighlight the country
-            function resetCountryFilter() {
-                svg.selectAll(".country").classed("highlighted", false);
-                applyFilters();
-            }
+
 
             // Filter data based on date
             d3.select("#begin-date").on("input", applyFiltersDateInput);
@@ -231,12 +331,12 @@ fetch('./museum.json')
             d3.select("#begin-date").on("change", applyFilters);
             d3.select("#end-date").on("change", applyFilters);
 
-            
+
             function applyFilters() {
                 var beginDate = parseInt(d3.select("#begin-date").property("value"));
                 var endDate = parseInt(d3.select("#end-date").property("value"));
-                endDate= endDate==-550 ? -30000 : endDate
-                beginDate= beginDate==-550 ? -90000: beginDate
+                endDate = endDate == -550 ? -30000 : endDate
+                beginDate = beginDate == -550 ? -90000 : beginDate
 
                 var filteredData = data.filter(item => {
                     var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
@@ -246,6 +346,7 @@ fetch('./museum.json')
 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
+
 
                 // Update the colors 
                 svg.selectAll(".country")
@@ -261,19 +362,20 @@ fetch('./museum.json')
                 // Apply country filter after date filter
                 var country = d3.select(".country.highlighted").data()[0]?.properties.name;
                 if (country) {
-                    var countryFilteredData = filteredData.filter(item => item.country === country);
-                    updateObjectIds(countryFilteredData);
-                } else {
-                    updateObjectIds(filteredData);
-                }
+                    filteredData = filteredData.filter(item => item.country === country);
+                } 
+                objectCountByType= calculateObjectCountByType(filteredData)
+                createTreeMap(objectCountByType)
+                updateObjectIds(filteredData);
+                
             }
 
             function applyFiltersDateInput() {
                 var beginDate = parseInt(d3.select("#begin-date").property("value"));
                 var endDate = parseInt(d3.select("#end-date").property("value"));
-                endDate= endDate==-550 ? -30000 : endDate
-                beginDate= beginDate==-550 ? -90000: beginDate
-            
+                endDate = endDate == -550 ? -30000 : endDate
+                beginDate = beginDate == -550 ? -90000 : beginDate
+
                 var filteredData = data.filter(item => {
                     var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
                     var isValidEndDate = !isNaN(endDate) && item.end_date <= endDate;
@@ -282,7 +384,7 @@ fetch('./museum.json')
 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
-                
+
                 // Update the colors 
                 svg.selectAll(".country")
                     .attr("fill", function (d) {
@@ -296,22 +398,22 @@ fetch('./museum.json')
                 var country = d3.select(".country.highlighted").data()[0]?.properties.name;
                 if (country) {
                     var countryFilteredData = filteredData.filter(item => item.country === country);
-                    objectCount.innerHTML=countryFilteredData.length.toString()
+                    objectCount.innerHTML = countryFilteredData.length.toString()
                 } else {
-                    objectCount.innerHTML=filteredData.length.toString()
+                    objectCount.innerHTML = filteredData.length.toString()
                 }
             }
 
-            qualitySwitch.addEventListener('change',()=>{
-                quality=qualitySwitch.checked
+            qualitySwitch.addEventListener('change', () => {
+                quality = qualitySwitch.checked
                 updateCarousel(imgIds)
             })
 
-            resetBtn.addEventListener('click',()=>{
-                beginDateSlider.value=-550
+            resetBtn.addEventListener('click', () => {
+                beginDateSlider.value = -550
                 beginDateValue.textContent = -90000
-                endDateSlider.value=2000
-                endDateValue.textContent =2000
+                endDateSlider.value = 2000
+                endDateValue.textContent = 2000
                 resetCountryFilter()
             })
 

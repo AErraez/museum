@@ -1,71 +1,101 @@
 .red-text {
   color: #d82c34;
 }
+
 .country {
-    stroke: white;
-    stroke-width: 0.5;
-  }
-  .highlighted {
-    fill: #d82c34;
-  }
-  .d3-tooltip {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    pointer-events: none
-  }
-  #img-carousel .carousel-item img {
+  stroke: white;
+  stroke-width: 0.5;
+}
+
+.highlighted {
+  fill: #d82c34;
+}
+
+.d3-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  pointer-events: none
+}
+
+#img-carousel .carousel-item img {
   width: auto;
-  max-width: 100%; 
+  max-width: 100%;
   max-height: 600px;
-  object-fit: contain; 
-  }
-  .carousel-caption {
-  background: rgba(0, 0, 0, 0.7); 
-  color: white !important; 
+  object-fit: contain;
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.7);
+  color: white !important;
   padding: 10px;
   border-radius: 8px;
-  }
-  body {
-    background-color: #ffffff; /* Cream background */
-     /* Dark red text */
-  }
-  .header {
-    background-color: #d82c34;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-  }
-  .container {
-    margin-top: 20px;
-  }
-  .card {
-    background-color: #ffffff;
-    border: none;
-  }
-  #map-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px 0;
-  }
-  #world-map {
-    border: 2px solid #d82c34;
-    border-radius: 3px;
-    background-color: white;
-    width: 90%;
-    height: auto;
-  }
- /* Change track color */
+}
+
+body {
+  background-color: #ffffff;
+  /* Cream background */
+  /* Dark red text */
+}
+
+.header {
+  background-color: #d82c34;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: none;
+}
+
+#map-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+#treemap-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+#world-map {
+  border: 2px solid #d82c34;
+  border-radius: 3px;
+  background-color: white;
+  width: 90%;
+  height: auto;
+}
+
+#tree-map {
+  border: 2px solid #d82c34;
+  border-radius: 3px;
+  background-color: white;
+  width: 90%;
+  height: auto;
+}
+
+/* Change track color */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 6px;
-  background: #bdb79f; /* Change track color */
+  background: #bdb79f;
+  /* Change track color */
   border-radius: 5px;
   outline: none;
   transition: background 0.3s;
@@ -77,7 +107,8 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #d82c34; /* Change thumb color */
+  background: #d82c34;
+  /* Change thumb color */
   border-radius: 50%;
   cursor: pointer;
   transition: 0.3s;
@@ -86,18 +117,21 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: #d82c34; /* Change thumb color for Firefox */
+  background: #d82c34;
+  /* Change thumb color for Firefox */
   border-radius: 50%;
   cursor: pointer;
 }
 
 /* When hovering or active */
 input[type="range"]:hover {
-  background: #bdb79f; /* Darker blue on hover */
+  background: #bdb79f;
+  /* Darker blue on hover */
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  background: #d82c34; /* Lighter red on hover */
+  background: #d82c34;
+  /* Lighter red on hover */
 }
 
 input[type="range"]:active::-webkit-slider-thumb {
@@ -105,8 +139,10 @@ input[type="range"]:active::-webkit-slider-thumb {
 }
 
 .alert {
-  background: #fff5f5; /* Light red background */
-  border-left: 5px solid #d82c34; /* Red accent on the left */
+  background: #fff5f5;
+  /* Light red background */
+  border-left: 5px solid #d82c34;
+  /* Red accent on the left */
 }
 
 .btn-danger {
