@@ -32,11 +32,14 @@ async function updateCarousel(imgIds) {
             var objgallery = apidata['GalleryNumber']
             var artist=apidata['artistDisplayName']
             var date=apidata['objectDate']
+            var objcountry= apidata['country']
+
+            var objtext= objcountry ? `, ${objcountry}` : ''
             if (artist){
-                var p2=`<p>Made By ${artist}. (${date})</p>`
+                var p2=`<p>Made By ${artist}. (${date}${objtext})</p>`
             }
             else {
-                var p2=`<p>(${date})</p>`
+                var p2=`<p>(${date}${objtext})</p>`
             }
 
             var p3=`<p>Currently not in display.</p>`
