@@ -233,7 +233,7 @@ fetch('./museum.json')
 
             const categoryColors = d3.scaleOrdinal()
             .domain(["Others", "Ceramics and Glass", "Sculpture and Figures", "Funerary and Religious Objects", "Paintings and Drawings",'Kitchen and Tableware','Furniture and Decoration','Jewelry and Ornaments','Fragments and Pieces','Boxes and Containers']) // Replace with real categories
-            .range(d3.schemeTableau10);
+            .range(d3.schemeSet3);
         
             function createTreeMap(objectCountByType) {
                 const treeSvg = d3.select("#tree-map");
@@ -295,7 +295,7 @@ fetch('./museum.json')
             
                 newNodes.append("text")
                     .attr("class", "node-label")
-                    .attr("fill", "white")
+                    .attr("fill", "black")
                     .style("font-size", "12px")
                     .style("pointer-events", "none");
             
@@ -406,6 +406,16 @@ fetch('./museum.json')
                     return isValidBeginDate && isValidEndDate;
                 });
 
+
+                // Apply country filter after date filter
+                var country = d3.select(".country.highlighted").data()[0]?.properties.name;
+                var type = d3.select(".type.highlighted").data()[0]?.data.name
+
+                var countryFilteredData=filteredData
+                if (type) {
+
+                    filteredData = filteredData.filter(item => item.object === type);
+                } 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
 
@@ -419,14 +429,20 @@ fetch('./museum.json')
                         }
                         return colorScale(count);
                     });
-                var country = d3.select(".country.highlighted").data()[0]?.properties.name;
+
                 if (country) {
-                    var countryFilteredData = filteredData.filter(item => item.country === country);
-                    objectCount.innerHTML = countryFilteredData.length.toString()
-                } else {
-                    objectCount.innerHTML = filteredData.length.toString()
-                }
+                    filteredData = filteredData.filter(item => item.country === country);
+                    countryFilteredData=countryFilteredData.filter(item => item.country === country)
+                } 
+                
+                
+                objectCountByType= calculateObjectCountByType(countryFilteredData)
+                createTreeMap(objectCountByType)
+                objectCount.innerHTML = filteredData.length.toString()
+
             }
+
+            
 
             qualitySwitch.addEventListener('change', () => {
                 quality = qualitySwitch.checked
