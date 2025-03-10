@@ -93,78 +93,7 @@ function shuffle(array) {
     }
 }
 
-const categoryColors = d3.scaleOrdinal()
-    .domain(["Others", "Ceramics and Glass", "Sculpture and Figures", "Funerary and Religious Objects", "Paintings and Drawings",'Kitchen and Tableware','Furniture and Decoration','Jewelry and Ornaments','Fragments and Pieces','Boxes and Containers']) // Replace with real categories
-    .range(d3.schemeTableau10);
 
-function createTreeMap(objectCountByType) {
-    const treeSvg = d3.select("#tree-map");
-
-    // Get the container's actual dimensions for responsiveness
-    const container = treeSvg.node().getBoundingClientRect();
-    const width = container.width;
-    const height = container.height;
-
-    treeSvg.attr("viewBox", `0 0 ${width} ${height}`)
-           .attr("preserveAspectRatio", "xMidYMid meet");
-
-    // Clear previous tree map
-    treeSvg.selectAll("*").remove();
-
-    // Create a tooltip
-    const tooltip = d3.select("body").append("div").attr("class", "d3-tooltip").style("position", "absolute").style("pointer-events", "none").style("z-index", "9999");
-
-    // Convert data into a hierarchical format
-    const root = d3.hierarchy({
-        children: Object.entries(objectCountByType).map(([key, value]) => ({ name: key, value }))
-    }).sum(d => d.value)
-      .sort((a, b) => b.value - a.value);
-
-    // Create a treemap layout
-    d3.treemap()
-        .size([width, height])
-        .padding(2)
-        (root);
-
-
-    // Add rectangles for each node
-    const nodes = treeSvg.selectAll(".node")
-        .data(root.leaves())
-        .enter()
-        .append("g")
-        .attr("class", "node")
-        .attr("transform", d => `translate(${d.x0},${d.y0})`);
-
-    nodes.append("rect")
-        .attr("width", d => d.x1 - d.x0)
-        .attr("height", d => d.y1 - d.y0)
-        .attr("fill", d => categoryColors(d.data.name))
-        .on("mouseover", (event, d) => {
-            tooltip.style("display", "inline-block")
-                   .html(`${d.data.name}: ${d.data.value} objects`)
-                   .style("left", (event.pageX + 10) + "px")
-                   .style("top", (event.pageY - 20) + "px");
-        })
-        .on("mouseout", () => {
-            tooltip.style("display", "none");
-        });
-
-    nodes.append("text")
-        .attr("x", 5)
-        .attr("y", 15)
-        .attr("fill", "white")
-        .style("font-size", "12px")
-        .style("pointer-events", "none")
-        .text(d => d.data.name)
-        .each(function (d) {
-            const bbox = this.getBBox();
-            if (bbox.width > d.x1 - d.x0 - 10 || bbox.height > d.y1 - d.y0 - 5) {
-                d3.select(this).remove();
-            }
-        });
-
-
-}
 
 
 const beginDateSlider = document.getElementById("begin-date");
@@ -302,11 +231,95 @@ fetch('./museum.json')
             }
 
 
-            const tree_svg = d3.select('#tree-map');
-            const tree_width = parseInt(tree_svg.attr('width'));
-            const tree_height = parseInt(tree_svg.attr('height'));
-            const unit = width * height / 1;
-            const bounds = {top: 0, left: 0, right: tree_width, bottom: tree_height}
+            const categoryColors = d3.scaleOrdinal()
+            .domain(["Others", "Ceramics and Glass", "Sculpture and Figures", "Funerary and Religious Objects", "Paintings and Drawings",'Kitchen and Tableware','Furniture and Decoration','Jewelry and Ornaments','Fragments and Pieces','Boxes and Containers']) // Replace with real categories
+            .range(d3.schemeTableau10);
+        
+            function createTreeMap(objectCountByType) {
+                const treeSvg = d3.select("#tree-map");
+            
+                // Get the container's actual dimensions for responsiveness
+                const container = treeSvg.node().getBoundingClientRect();
+                const width = container.width;
+                const height = container.height;
+            
+                treeSvg.attr("viewBox", `0 0 ${width} ${height}`)
+                       .attr("preserveAspectRatio", "xMidYMid meet");
+            
+                // Convert data into a hierarchical format
+                const root = d3.hierarchy({
+                    children: Object.entries(objectCountByType).map(([key, value]) => ({ name: key, value }))
+                }).sum(d => d.value)
+                  .sort((a, b) => b.value - a.value);
+            
+                // Create a treemap layout
+                d3.treemap()
+                    .size([width, height])
+                    .padding(2)
+                    (root);
+            
+                // Bind data to existing nodes and update positions
+                let nodes = treeSvg.selectAll(".node")
+                    .data(root.leaves(), d => d.data.name);
+            
+                // Remove old elements that are no longer needed
+                nodes.exit().remove();
+            
+                // Enter new elements if necessary
+                let newNodes = nodes.enter()
+                    .append("g")
+                    .attr("class", "node");
+            
+                newNodes.append("rect")
+                    .attr("class", "type")
+                    .attr("fill", d => categoryColors(d.data.name))
+                    .on("mouseover", (event, d) => {
+                        tooltip.style("display", "inline-block")
+                               .html(`${d.data.name}: ${d.data.value} objects`)
+                               .style("left", (event.pageX + 10) + "px")
+                               .style("top", (event.pageY - 20) + "px");
+                    })
+                    .on("mouseout", () => {
+                        tooltip.style("display", "none");
+                    })
+                    .on("click", function (event, d) {
+                        var typeName = d.data.name;
+                        if (treeSvg.selectAll(".type.highlighted").size() > 0 && treeSvg.selectAll(".type.highlighted").data()[0].data.name === typeName) {
+                            d3.selectAll(".type").classed("highlighted", false);
+                        } else {
+                            d3.selectAll(".type").classed("highlighted", false);
+                            d3.select(this).classed("highlighted", true);
+                        }
+                        applyFilters();
+                    });
+            
+                newNodes.append("text")
+                    .attr("class", "node-label")
+                    .attr("fill", "white")
+                    .style("font-size", "12px")
+                    .style("pointer-events", "none");
+            
+                // Merge and update existing elements
+                nodes = newNodes.merge(nodes);
+            
+                nodes.attr("transform", d => `translate(${d.x0},${d.y0})`);
+            
+                nodes.select("rect")
+                    .attr("width", d => d.x1 - d.x0)
+                    .attr("height", d => d.y1 - d.y0);
+            
+                nodes.select(".node-label")
+                    .attr("x", 5)
+                    .attr("y", 15)
+                    .text(d => d.data.name)
+                    .each(function (d) {
+                        const bbox = this.getBBox();
+                        if (bbox.width > d.x1 - d.x0 - 10 || bbox.height > d.y1 - d.y0 - 5) {
+                            d3.select(this).remove();
+                        }
+                    });
+            }
+            
             createTreeMap(objectCountByType)
 
             // update object IDs based on filters
@@ -344,9 +357,18 @@ fetch('./museum.json')
                     return isValidBeginDate && isValidEndDate;
                 });
 
+
+                // Apply country filter after date filter
+                var country = d3.select(".country.highlighted").data()[0]?.properties.name;
+                var type = d3.select(".type.highlighted").data()[0]?.data.name
+
+                var countryFilteredData=filteredData
+                if (type) {
+
+                    filteredData = filteredData.filter(item => item.object === type);
+                } 
                 // Calculate object count based on filtered data
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
-
 
                 // Update the colors 
                 svg.selectAll(".country")
@@ -359,13 +381,15 @@ fetch('./museum.json')
                         return colorScale(count);
                     });
 
-                // Apply country filter after date filter
-                var country = d3.select(".country.highlighted").data()[0]?.properties.name;
                 if (country) {
                     filteredData = filteredData.filter(item => item.country === country);
+                    countryFilteredData=countryFilteredData.filter(item => item.country === country)
                 } 
-                objectCountByType= calculateObjectCountByType(filteredData)
+                
+                
+                objectCountByType= calculateObjectCountByType(countryFilteredData)
                 createTreeMap(objectCountByType)
+
                 updateObjectIds(filteredData);
                 
             }
@@ -414,6 +438,7 @@ fetch('./museum.json')
                 beginDateValue.textContent = -90000
                 endDateSlider.value = 2000
                 endDateValue.textContent = 2000
+                d3.selectAll(".type").classed("highlighted", false)
                 resetCountryFilter()
             })
 
