@@ -384,7 +384,7 @@ fetch('./museum.json')
                 colorScale = d3.scaleQuantize()
                 .domain([0, d3.median(Object.values(objectCountByCountry))*10 , d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
                 .range(d3.schemeReds[7]);  // Color range
-                unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
+                unknownCount.innerHTML= objectCountByCountry['Unknown'] ? `Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`:`Objects of Unknown Origin: 0`
                 // Update the colors 
                 svg.selectAll(".country")
                     .attr("fill", function (d) {
@@ -433,7 +433,7 @@ fetch('./museum.json')
                 
                 
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
-                unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
+                unknownCount.innerHTML= objectCountByCountry['Unknown'] ? `Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`:`Objects of Unknown Origin: 0`
                 colorScale = d3.scaleQuantize()
                 .domain([0, d3.median(Object.values(objectCountByCountry))*10 , d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
                 .range(d3.schemeReds[7]);  // Color range
