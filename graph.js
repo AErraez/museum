@@ -177,8 +177,8 @@ fetch('./museum.json')
 
             // color scale for map
             var colorScale = d3.scaleQuantize()
-                .domain([0, d3.max(Object.values(objectCountByCountry)) * 0.001, d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
-                .range(d3.schemePuBu[8]);  // Color range
+                .domain([0, d3.median(Object.values(objectCountByCountry))*10 , d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
+                .range(d3.schemeReds[7]);  // Color range
 
             // no clue how this works:/
             svg.selectAll(".country")
@@ -370,7 +370,20 @@ fetch('./museum.json')
                     filteredData = filteredData.filter(item => item.object === type);
                 } 
                 // Calculate object count based on filtered data
+               
+                if (country) {
+                    filteredData = filteredData.filter(item => item.country === country);
+                    //countryFilteredData=countryFilteredData.filter(item => item.country === country)
+                } 
+                
+                
+                objectCountByType= calculateObjectCountByType(filteredData)
+                createTreeMap(objectCountByType)
+
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
+                colorScale = d3.scaleQuantize()
+                .domain([0, d3.median(Object.values(objectCountByCountry))*10 , d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
+                .range(d3.schemeReds[7]);  // Color range
                 unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
                 // Update the colors 
                 svg.selectAll(".country")
@@ -383,14 +396,7 @@ fetch('./museum.json')
                         return colorScale(count);
                     });
 
-                if (country) {
-                    filteredData = filteredData.filter(item => item.country === country);
-                    countryFilteredData=countryFilteredData.filter(item => item.country === country)
-                } 
-                
-                
-                objectCountByType= calculateObjectCountByType(countryFilteredData)
-                createTreeMap(objectCountByType)
+
 
                 updateObjectIds(filteredData);
                 
@@ -419,9 +425,18 @@ fetch('./museum.json')
                     filteredData = filteredData.filter(item => item.object === type);
                 } 
                 // Calculate object count based on filtered data
+               
+                if (country) {
+                    filteredData = filteredData.filter(item => item.country === country);
+                    countryFilteredData=countryFilteredData.filter(item => item.country === country)
+                } 
+                
+                
                 objectCountByCountry = calculateObjectCountByCountry(filteredData);
                 unknownCount.innerHTML=`Objects of Unknown Origin: ${objectCountByCountry['Unknown']}`
-                // Update the colors 
+                colorScale = d3.scaleQuantize()
+                .domain([0, d3.median(Object.values(objectCountByCountry))*10 , d3.max(Object.values(objectCountByCountry))])  // Use max value from objectCountByCountry
+                .range(d3.schemeReds[7]);  // Color range
                 svg.selectAll(".country")
                     .attr("fill", function (d) {
                         var countryName = d.properties.name;
@@ -432,14 +447,10 @@ fetch('./museum.json')
                         return colorScale(count);
                     });
 
-                if (country) {
-                    filteredData = filteredData.filter(item => item.country === country);
-                    countryFilteredData=countryFilteredData.filter(item => item.country === country)
-                } 
-                
-                
-                objectCountByType= calculateObjectCountByType(countryFilteredData)
+
+                objectCountByType= calculateObjectCountByType(filteredData)
                 createTreeMap(objectCountByType)
+
                 objectCount.innerHTML = filteredData.length.toString()
 
             }
