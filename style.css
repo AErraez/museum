@@ -16,7 +16,7 @@
   }
 }
 .red-text {  
-  color: #d82c34;
+  color: #e4002b;
 }
  
 .country {
@@ -25,7 +25,7 @@
 }
 
 #unknown-objects {
-  color: #d82c34;
+  color: #e4002b;
   font-weight: bold;
   background-color: #fff5f5;
   padding: 10px 20px;
@@ -35,12 +35,12 @@
 }
 
 .country + .highlighted {
-  fill: #d82c34;
+  fill: #e4002b;
   stroke: #a9212a;
   stroke-width: 1;
 }
 .highlighted {
-  stroke: #d82c34;
+  stroke: #e4002b;
   stroke-width: 3;
 }
 
@@ -76,7 +76,7 @@ body {
 }
 
 .header {
-  background-color: #d82c34;
+  background-color: #e4002b;
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -108,7 +108,7 @@ body {
 }
 
 #world-map {
-  border: 2px solid #d82c34;
+  border: 2px solid #e4002b;
   border-radius: 3px;
   background-color: white;
   width: 90%;
@@ -141,7 +141,7 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #d82c34;
+  background: #e4002b;
   /* Change thumb color */
   border-radius: 50%;
   cursor: pointer;
@@ -151,7 +151,7 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: #d82c34;
+  background: #e4002b;
   /* Change thumb color for Firefox */
   border-radius: 50%;
   cursor: pointer;
@@ -164,7 +164,7 @@ input[type="range"]:hover {
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  background: #d82c34;
+  background: #e4002b;
   /* Lighter red on hover */
 }
 
@@ -175,12 +175,12 @@ input[type="range"]:active::-webkit-slider-thumb {
 .alert {
   background: #fff5f5;
   /* Light red background */
-  border-left: 5px solid #d82c34;
+  border-left: 5px solid #e4002b;
   /* Red accent on the left */
 }
 
 .btn-danger {
-  background-color: #d82c34;
+  background-color: #e4002b;
   border: none;
   transition: 0.3s ease-in-out;
 }
@@ -191,6 +191,6 @@ input[type="range"]:active::-webkit-slider-thumb {
 }
 
 #QualitySwitch:checked {
-  background-color: #d82c34;
-  border-color: #d82c34;
+  background-color: #e4002b;
+  border-color: #e4002b;
 }
