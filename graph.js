@@ -203,6 +203,11 @@ fetch('./museum.json')
                         // filter country on click
                         highlightCountry(countryName);
                         applyFilters();
+                                svg.selectAll(".country")
+            .transition().duration(500)
+            .style("opacity", function (d) {
+                return d.properties.name === countryName ? 1 : 0.5; // Fade out other countries
+            });
                     }
                 })
                 .on("mouseover", function (event, d) {
@@ -229,6 +234,7 @@ fetch('./museum.json')
             // Reset the country filter and unhighlight the country
             function resetCountryFilter() {
                 svg.selectAll(".country").classed("highlighted", false);
+                svg.transition().duration(500).selectAll(".country").style("opacity", 1)
                 applyFilters();
             }
 
@@ -304,22 +310,26 @@ fetch('./museum.json')
                 // Merge and update existing elements
                 nodes = newNodes.merge(nodes);
             
-                nodes.attr("transform", d => `translate(${d.x0},${d.y0})`);
-            
-                nodes.select("rect")
-                    .attr("width", d => d.x1 - d.x0)
-                    .attr("height", d => d.y1 - d.y0);
-            
-                nodes.select(".node-label")
-                    .attr("x", 5)
-                    .attr("y", 15)
-                    .text(d => d.data.name)
-                    .each(function (d) {
-                        const bbox = this.getBBox();
-                        if (bbox.width > d.x1 - d.x0 - 10 || bbox.height > d.y1 - d.y0 - 5) {
-                            d3.select(this).remove();
-                        }
-                    });
+                nodes.transition().duration(500)
+                .style("opacity", 1)
+                .attr("transform", d => `translate(${d.x0},${d.y0})`);
+        
+            nodes.select("rect")
+                .transition().duration(500)
+                .attr("width", d => d.x1 - d.x0)
+                .attr("height", d => d.y1 - d.y0);
+        
+            nodes.select(".node-label")
+                .transition().duration(500)
+                .attr("x", 5)
+                .attr("y", 15)
+                .text(d => d.data.name)
+                .each(function (d) {
+                    const bbox = this.getBBox();
+                    if (bbox.width > d.x1 - d.x0 - 10 || bbox.height > d.y1 - d.y0 - 5) {
+                        d3.select(this).remove();
+                    }
+                });
             }
             
             createTreeMap(objectCountByType)
