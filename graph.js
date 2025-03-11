@@ -319,14 +319,21 @@ fetch('./museum.json')
                 .attr("width", d => d.x1 - d.x0)
                 .attr("height", d => d.y1 - d.y0);
         
-            nodes.select(".node-label")
+                nodes.select(".node-label")
                 .transition().duration(500)
-                .attr("x", 5)
-                .attr("y", 15)
+                .attr("x", d => (d.x1 - d.x0) / 2)  // Center horizontally
+                .attr("y", d => (d.y1 - d.y0) / 2)  // Center vertically
+                .attr("text-anchor", "middle")  // Center alignment
+                .style("dominant-baseline", "middle")  // Vertical centering
+                .style("font-size", d => {
+                    let width = d.x1 - d.x0;
+                    let height = d.y1 - d.y0;
+                    return Math.min(14, width / d.data.name.length * 1.5, height / 2) + "px";
+                })
                 .text(d => d.data.name)
                 .each(function (d) {
                     const bbox = this.getBBox();
-                    if (bbox.width > d.x1 - d.x0 - 10 || bbox.height > d.y1 - d.y0 - 5) {
+                    if (bbox.width > d.x1 - d.x0 - 20 || bbox.height > d.y1 - d.y0 - 10) {
                         d3.select(this).remove();
                     }
                 });
