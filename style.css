@@ -212,6 +212,11 @@ input[type="range"]:active::-webkit-slider-thumb {
   transition: 0.3s ease-in-out;
 }
 
+#visitdiv {
+  width: 75%;
+  justify-self: center;
+}
+
 .accordion-button:not(.collapsed) {
   background-color: #fff5f5 !important; /* Light red tint when expanded */
   color: #e4002b !important;
