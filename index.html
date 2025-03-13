@@ -52,7 +52,7 @@
       
 
       <div class="card p-4 shadow-sm border-0 flex-grow-1">
-        <h4>Filter by Time Period</h4>
+        <h3 class="fw-bold red-text">Filter by Time Period</h3>
         <p>Select a range of years to explore artifacts from a specific era.</p>
   
         <label for="begin-date" class="form-label">From Year: <span id="begin-date-value">-90000</span></label>
@@ -78,20 +78,20 @@
 
 
   <div id="map-container" class="container p-3">
-    <h4 class="">Filter by Country of Origin</h4>
+    <h3 class="fw-bold red-text">Filter by Country of Origin</h3>
     <p class="text-center">Click on the country you're interested on. Hovering over a country will display the number of available objects for it. <br> Click the country again to unfilter.</p>
     <p id="unknown-objects" class="text-end" style="align-self: flex-end;">Objects of Unknown Origin:</p>
     <svg id="world-map" width="700" height="300"></svg>
   </div>
 
   <div id="treemap-container" class="container p-3">
-    <h4 class="">Filter by Object Type</h4>
+    <h3 class="fw-bold red-text">Filter by Object Type</h3>
     <p class="text-center">Hover over a rectangle to see the amount of items for that object type. Click to filter for the type of object you're interested in. <br> Click the rectangle again to unfilter.</p>
     <svg id="tree-map" width="700" height="300"></svg>
   </div>
 
   <div class="container-lg mt-5">
-    <h3 class="text-center">Artifacts from Filters</h3>
+    <h3 class="text-center fw-bold red-text">Artifacts Display</h3>
     <p class="text-center">Here are some of the artifacts based on your selected filters.</p>
     <div class="d-flex justify-content-center align-items-center gap-5 mb-2 form-switch" style="padding-left: 0">
       <label class="form-check-label" for="QualitySwitch">High Quality Images</label>
@@ -118,6 +118,48 @@
       </button>
     </div>
   </div>
+  <div class="container-lg mt-5">
+    <h3 class="text-center mb-4 mt-2 fw-bold red-text">Tips and Tricks</h3>
+    <div class="accordion" id="insightsAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Compare Object Types Between Countries
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#insightsAccordion">
+          <div class="accordion-body">
+            Choose an object type and compare how it differs between two countries using the map. For example, the design and materials of weapons and instruments from England vary greatly from those of Japan.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Evolution of Object Types Over Time
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#insightsAccordion">
+          <div class="accordion-body">
+            Select an object type and country, then use the date filters to see how the objects evolved over time. For instance, in the U.S. from 1700 to 1800, realism predominated, while from 1800 to 1900, paintings leaned more towards impressionism.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Distribution of Objects Over Time
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#insightsAccordion">
+          <div class="accordion-body">
+            Use the range slider to see how the distribution of objects changes over time. For example, from 1000 to 1500, most objects were sculptures, whereas from 1500 onwards, ceramic and glass objects became more prevalent.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
   <div class="container-lg mt-5 text-center">
     <h3 class="fw-bold red-text">Art and History: A Journey Through Time</h3>

@@ -195,3 +195,40 @@ input[type="range"]:active::-webkit-slider-thumb {
   background-color: #e4002b;
   border-color: #e4002b;
 }
+
+.accordion {
+  width: 70%;
+
+  justify-self: center;
+}
+.accordion-button {
+  background-color: white !important;
+  color: black !important;
+  transition: 0.3s ease-in-out;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #fff5f5 !important; /* Light red tint when expanded */
+  color: #e4002b !important;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 5px rgba(228, 0, 43, 0.5);
+}
+
+.accordion-body {
+  background-color: #fff5f5;
+  color: #333;
+}
+
+.accordion-item {
+  border: 1px solid #e4002b;
+}
+
+.accordion-header {
+  border-bottom: 0px solid #e4002b;
+}
+
+h3 {
+  color: #e4002b;
+}
