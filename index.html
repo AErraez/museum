@@ -91,8 +91,8 @@
   </div>
 
   <div class="container-lg mt-5">
-    <h3 class="text-center fw-bold red-text">Artifacts Display</h3>
-    <p class="text-center">Here are some of the artifacts based on your selected filters.</p>
+    <h3 class="text-center fw-bold red-text">Objects Display</h3>
+    <p class="text-center">Here are some of the museum's items based on your selected filters.</p>
     <div class="d-flex justify-content-center align-items-center gap-5 mb-2 form-switch" style="padding-left: 0">
       <label class="form-check-label" for="QualitySwitch">High Quality Images</label>
       <input class="form-check-input" type="checkbox" id="QualitySwitch">
@@ -123,11 +123,11 @@
     <div class="accordion" id="insightsAccordion">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
             Compare Object Types Between Countries
           </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#insightsAccordion">
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#insightsAccordion">
           <div class="accordion-body">
             Choose an object type and compare how it differs between two countries using the map. For example, the design and materials of weapons and instruments from England vary greatly from those of Japan.
           </div>
@@ -177,6 +177,10 @@
       </a>
     </div>
   </div>
+  <footer class="footer text-white text-center py-3 mt-5">
+    <p class="mb-0">Data obtained from the MET Museum Collection API.</p>
+    <a target="_blank" style="color: white;" href="https://metmuseum.github.io/">https://metmuseum.github.io/</a>
+  </footer>
 </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
