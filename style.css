@@ -5,6 +5,7 @@
   background-position: center; /* Centers the image */
   background-repeat: no-repeat; /* Prevents tiling */
   background-size: cover;
+  animation: fadeIn 2s forwards;
 }
 
 @keyframes fadeIn {

@@ -104,10 +104,18 @@ const endDateValue = document.getElementById("end-date-value");
 
 beginDateSlider.addEventListener("input", function () {
     beginDateValue.textContent = this.value == -550 ? -90000 : this.value;
+    if (parseInt(beginDateSlider.value) > parseInt(endDateSlider.value)) {
+        beginDateSlider.value = endDateSlider.value;
+    }
+    beginDateValue.textContent = beginDateSlider.value;
 });
 
 endDateSlider.addEventListener("input", function () {
     endDateValue.textContent = this.value == -550 ? -30000 : this.value;
+    if (parseInt(endDateSlider.value) < parseInt(beginDateSlider.value)) {
+        endDateSlider.value = beginDateSlider.value;
+    }
+    endDateValue.textContent = endDateSlider.value;
 });
 
 
@@ -328,7 +336,12 @@ fetch('./museum.json')
                 .style("font-size", d => {
                     let width = d.x1 - d.x0;
                     let height = d.y1 - d.y0;
-                    return Math.min(14, width / d.data.name.length * 1.5, height / 2) + "px";
+                    if (d.data.name){
+                    return Math.min(14, width / d.data.name.length * 1.5, height / 2) + "px"
+                    }
+                    else {
+                        return '1px'
+                    }
                 })
                 .text(d => d.data.name)
                 .each(function (d) {
@@ -371,9 +384,9 @@ fetch('./museum.json')
                 beginDate = beginDate == -550 ? -90000 : beginDate
 
                 var filteredData = data.filter(item => {
-                    var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
-                    var isValidEndDate = !isNaN(endDate) && item.end_date <= endDate;
-                    return isValidBeginDate && isValidEndDate;
+
+                    var isValidDateRange = !isNaN(beginDate) && !isNaN(endDate) && !(item.end_date < beginDate || item.beg_date > endDate);
+                    return isValidDateRange;
                 });
 
 
@@ -426,9 +439,9 @@ fetch('./museum.json')
                 beginDate = beginDate == -550 ? -90000 : beginDate
 
                 var filteredData = data.filter(item => {
-                    var isValidBeginDate = !isNaN(beginDate) && item.beg_date >= beginDate;
-                    var isValidEndDate = !isNaN(endDate) && item.end_date <= endDate;
-                    return isValidBeginDate && isValidEndDate;
+                    var isValidDateRange = !isNaN(beginDate) && !isNaN(endDate) && !(item.end_date < beginDate || item.beg_date > endDate);
+                    return isValidDateRange;
+
                 });
 
 
